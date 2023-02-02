@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css">
+    <title>Ex6</title>
+</head>
+<body>
+
+    <div class="parent">
+        <button id="toggleBtn">Click Me</button>
+        <div id="sidebar">
+            <div class="parent3">
+                <div>
+                    <h2>SIDE-BAR</h2>
+                </div>
+            </div>
+            <div class="parent4">
+                <div>Home</div>
+                <div>About</div>
+                <div>Projects</div>
+                <div>Contact</div>
+            </div>
+            <div class="parent5">
+                <i class="fab fa-facebook-square fa-3x"></i>
+                <i class="fab fa-twitter-square fa-3x"></i>
+                <i class="fab fa-linkedin fa-3x"></i>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var toggleBtn = document.getElementById("toggleBtn");
+        var sidebar = document.getElementById("sidebar");
+        var parent = document.querySelector(".parent");
+
+        toggleBtn.addEventListener("click", function() {
+            parent.classList.toggle("sidebar-open");
+        });
+    </script>
+
+</body>
+</html>

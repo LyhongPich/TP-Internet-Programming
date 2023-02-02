@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ex3</title>
+    <script src="https://cdn.tailwindcss.com/"></script>
+</head>
+<body>
+    <div class="flex items-center justify-center h-[700px]">
+        <div class="border-[6px] shadow-lg shadow-slate-600 border-black border-solid bg-indigo-100 w-[410px] h-[600px]">
+            <div class="mt-[180px] text-center w-[200px] mx-auto">
+                <h1 class="text-5xl font-medium font-sans text-cyan-900" >Counter</h1>
+            </div>
+            <div class="text-center text-7xl mt-8 mb-7">
+                <h1 id="number"></h1>
+            </div>
+            <div class="flex w-[300px] mx-auto text-[13px] font-semibold">
+                <button id="decrease" type="button" class="w-full mr-3 px-3 py-[2px] border-2 border-black border-solid rounded">
+                    DECREASE
+                </button>
+                <button id="reset" type="button" class="w-full py-[2px] border-2 border-black border-solid rounded">
+                    RESET
+                </button>
+                <button id="increase" type="button" 
+                        class="w-full bg-black text-white ml-3 px-3 py-[2px] border-2 border-black border-solid rounded">
+                    INCREASE
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const numberList = document.getElementById("number");
+        class Counter {
+            number = 0;
+            constructor() {
+                // Make the number start with zero
+                // localStorage.setItem("Number", this.number);
+
+                // Initial display the number from local storage on web browser when starting the server
+                // numberList.innerHTML = localStorage.getItem("Number");
+
+                // Get the current value to local storage (value will be change after using functions below)
+                this.number = localStorage.getItem("Number");
+            }
+
+            decrease() {
+                this.number--;
+                return this.number;
+            }
+
+            increase() {
+                this.number++;
+                return this.number;
+            }
+
+            reset() {
+                this.number = 0;
+                return this.number;
+            }
+        }
+        let counter = new Counter();
+
+        const inc_btn = document.getElementById("increase");
+        const dec_btn = document.getElementById("decrease");
+        const reset_btn = document.getElementById("reset");
+
+        inc_btn.addEventListener("click", () => {
+            localStorage.setItem("Number", counter.increase());
+            numberList.innerHTML = localStorage.getItem("Number");
+            numberList.style.color = "green";
+        })
+
+        dec_btn.addEventListener("click", () => {
+            localStorage.setItem("Number", counter.decrease());
+            numberList.innerHTML = localStorage.getItem("Number");
+            numberList.style.color = "red";
+        })
+
+        reset_btn.addEventListener("click", () => {
+            localStorage.setItem("Number", counter.reset());
+            numberList.innerHTML = localStorage.getItem("Number");
+            numberList.style.color = "black";
+        })
+
+
+    </script>
+</body>
+</html>
