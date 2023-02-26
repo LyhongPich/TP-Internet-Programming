@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ex1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"/>
+    
+    <style>
+        body{
+            display: flex;
+            height: 700px;
+            justify-content: center;
+            align-items: center;
+        }
+        .box{
+            border: 5px solid black;
+            width: 600px;
+            height: 500px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .box img{
+            width: 150px;
+        }
+        .box h3{
+            font-family: 'Irish Grover', cursive;
+        }
+        #btn{
+            background-color: rgb(76, 197, 249);
+            width: 150px;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Irish Grover', cursive;
+        }
+        .inLoad{
+            padding-top: 100px;
+        }
+        .activity{
+            margin: 20px 0px;
+            width: 400px;
+            height: 300px;
+            overflow-x: auto;
+            border: 2px solid rgb(202, 198, 198);
+            border-radius: 7px;
+            background-color: rgb(215, 225, 235);
+        }
+        .load .para .edit i {
+            width: 20px;
+            height: 20px;
+            color: rgb(68, 185, 240);
+            margin-top: 5px;
+            margin-right: 10px;
+        }
+        .para{
+            padding-left: 30px;
+            text-align: left;
+        }
+        .edit{
+            display: flex;
+            align-items: center;
+            height: 20px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <img src="https://em-content.zobj.net/source/noto-emoji-animations/344/unamused-face_1f612.gif" alt="">
+        <h3>Are you boring?</h3>
+        <button id="btn" onclick="loadActivity()">Tell me what to do</button>
+        <div id="loading" class="activity">
+            <div id="toLoad" class="inLoad">Loading...</div>
+            <div id="load" class="load">
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let loading = document.getElementById('loading');
+
+        loading.hidden = true;
+        function loadActivity(){
+            loading.hidden = false;
+            let toLoad = document.getElementById('toLoad');
+            let load = document.getElementById('load');
+            toLoad.hidden = false;
+            load.hidden = true;
+            fetch('https://www.boredapi.com/api/activity')    
+                .then(async (response) =>{
+                    toLoad.hidden = true;
+                    load.hidden = false;
+                    let data = await response.json();
+                    load.innerHTML = `
+                        <h5>${data["activity"]}</h5>
+                        <div class="para">
+                            <div class="edit">
+                                <i class="fa-solid fa-tag"></i>
+                                <p>Type: ${data["type"]}</p>
+                            </div>
+                            <div class="edit">
+                                <i class="fa-solid fa-users"></i>
+                                <p>Participants: ${data["participants"]}</p>
+                            </div>
+                            <div class="edit">
+                                <i class="fa-solid fa-dollar-sign"></i>
+                                <p>Price: ${data["price"]}$</p>
+                            </div>
+                            <div class="edit">
+                                <i class="fa-solid fa-link"></i>
+                                <p>Link: <a href="${data["link"]}">${data["link"]}</a></p>
+                            </div>
+                        </div>
+                    `
+                })
+        }
+    </script>
+</body>
+</html>

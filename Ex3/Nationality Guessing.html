@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ex3</title>
+    
+    <!-- font Irish Grover, cursive -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Irish+Grover&display=swap" rel="stylesheet">
+    
+    <style>
+        body{
+            display: flex;
+            height: 550px;
+            justify-content: center;
+            align-items: center;
+        }
+        .box{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 5px solid black;
+            width: 350px;
+            height: 400px;
+            text-align: center;
+        }
+        .box img{
+            width: 100px;
+            margin-bottom: -30px;
+        }
+        .box h2{
+            font-family: 'Irish Grover', cursive;
+        }
+        .box span{
+            color: blue;
+        }
+        .inputSession input {
+            padding: 7px;
+            border: 1px solid black;
+            border-radius: 7px;
+        }
+        .inputSession button{
+            padding: 7px;
+            border: 1px solid black;
+            border-radius: 7px;
+            background-color: rgb(0, 166, 255);
+        }
+        #display{
+            width: 200px;
+            height: 200px;
+            border: 1px solid black;
+            margin-top: 10px;
+            border-radius: 7px;
+            background-color: aliceblue;
+        }
+        #display #loading{
+            padding-top: 90px;
+        }
+        .row{
+            background-color: rgb(223, 214, 214);
+            padding: 7px 0px;
+            margin-bottom: 10px;
+            border-radius: 7px;
+        }
+        .row .left{
+            color: black;
+            margin-right: 120px;
+        }
+        .row .right{
+            color: rgb(228, 155, 21);
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <img src="https://cliply.co/wp-content/uploads/2021/02/392102850_EARTH_EMOJI_400px.gif" alt="">
+        <h2>I Know you <span>Home</span></h2>
+        <div class="inputSession">
+            <input id="name" type="text" placeholder="Tell me your first name">
+            <button onclick="guessing()" >Guess</button>
+        </div>
+        <div id="display">
+            <div id="loading">
+                Loading...
+            </div>
+            <div id="show" class="show"></div>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById('display');
+        display.hidden = true;
+
+        function guessing(){
+            let name = document.getElementById('name');
+            let loading = document.getElementById('loading');
+            let show = document.getElementById('show');
+            display.hidden = false;
+            loading.hidden = false;
+            show.hidden = true;
+            display.style.background = "aliceblue";
+            display.style.border = "1px solid black";
+
+            fetch(`https://api.nationalize.io/?name=${name.value}`)
+                .then(async(response) => {
+                    display.style.background = "white";
+                    display.style.border = "none";
+                    loading.hidden = true;
+                    show.hidden = false;
+                    let data = await response.json();
+                    let content = '';
+                    // console.log(data["country"][0]["country_id"]);
+
+                    for(let x of data.country) {
+                        // console.log(x.country_id);
+                        content += `
+                            <div class="row">
+                                <span class="left">${x.country_id}</span>
+                                <span class="right">${(x.probability*100).toFixed(1)}%</span>
+                            </div>
+                        `;
+                    }
+                    show.innerHTML = content;
+                })
+                .catch((error)=>{
+                    display.hidden = true;
+                    loading.hidden = true;
+                    show.hidden = true;
+                    console.log("Error is: "+error);
+                })
+        }
+    </script>
+</body>
+</html>
