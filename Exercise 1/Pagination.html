@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ex1</title>
+
+    <style>
+        .content{
+            display: flex;
+            width: 670px;
+            height: 500px;
+            margin: 0px auto;
+            background-color: aquamarine;
+        }
+        #scroll{
+            width: 500px;
+            height: 480px;
+            background-color: rgb(189, 195, 195);
+            overflow-y: auto;
+        }
+        #num{
+            width: 80px;
+            text-align: end;
+            font-size: 2rem;
+        }
+        .data{
+            width: 470px;
+            height: 100px;
+            margin: 5px auto 0px;
+            padding: 5px 0px 0px 5px;
+            background-color: white;
+        }
+        img{
+            padding-left: 4px;
+            width: 18px;
+            height: 13px;
+        }
+        #loadingImg{
+            width: 30px;
+            height: 30px;
+            margin: 5px auto;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: green;
+            animation: load 0.5s ease infinite;
+        }
+        @keyframes load {
+            0% {
+                transform: rotate(0turn);
+            }
+            100% {
+                transform: rotate(1turn);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div id="num">
+            
+        </div>
+        <div id="scroll">
+            <div id="display"></div>
+            <div id="showLoader">
+                <div id="loadingImg"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let pageNumber = 0;
+        
+        let pageChange = document.getElementById('num');
+        let scrolEle = document.getElementById('scroll');
+
+        // Target id display
+        let display = document.getElementById('display');
+        // Target id showLoader
+        let load = document.getElementById('showLoader');
+
+        // By default the scroll bar is at the start position, so no loading yet
+        let loading = false;
+
+        // Hide loading animation
+        load.hidden = true;
+
+        // fetch data from api using pageNumber
+        function fetchAPI(pageNumber) {
+
+            fetch(`https://api.instantwebtools.net/v1/passenger?page=${pageNumber}&size=20`)
+                .then(async (res)=>{
+                    // Hide loading animation after getting data
+                    load.hidden = true;
+
+                    // Change text of page number when fetching more data
+                    pageChange.innerText = pageNumber;
+                    let getData = await res.json();
+
+                    // console.log(getData.data[0]);
+                    for(let x=0; x<getData["data"].length; x++) {
+                        display.innerHTML += `
+                            <div class="data">
+                                <span>
+                                    ✈️: ${getData["data"][x].airline[0].name} - ${getData["data"][x].airline[0].country}
+                                </span>
+                                <br>
+                                <span>🙂: ${getData["data"][x].name}</span>
+                            </div>
+                        `;
+                    }
+                    // display.innerHTML = setContent;
+                });
+        }
+        function fetching() {
+            // Trigger when scroll bar in at an end content
+            loading = true;
+
+            setTimeout(()=>{
+                // Before getting data loading animation is shown
+
+                load.hidden = false;
+                setTimeout(()=>{
+                    pageNumber++; // increase to next page for more data
+                    loading = false; // Get more data and disable loading display
+                    fetchAPI(pageNumber);
+                }, 1000);
+            }, 500); // Display loading animation for half second before showing data
+        }
+
+        fetchAPI(pageNumber);
+
+        scrolEle.addEventListener('scroll', (event)=>{
+            if(scrolEle.clientHeight + scrolEle.scrollTop >= (scrolEle.scrollHeight)) {
+                if(!loading) {
+                    // console.log(loading);
+                    fetching();
+                    // console.log(pageNumber);
+                }
+            }
+        });
+        
+    </script>
+</body>
+</html>
