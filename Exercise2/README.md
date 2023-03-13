@@ -1,4 +1,4 @@
-##Instalation
+## Instalation
 
 Install package manager
 
@@ -6,7 +6,7 @@ Install package manager
 npm install
 ```
 
-##Compile and Run on Server
+## Compile and Run on Server
 
 ```
 nodemon start
@@ -18,7 +18,7 @@ or
 npm run start
 ```
 
-##Open browser
+## Open browser
 
 Open any of your browser
 
