@@ -1,0 +1,23 @@
+[
+  {
+    "username": "cappuccino",
+    "firstname": "lyhong",
+    "lastname": "pich",
+    "email": "lyhong.pich@gmail.com",
+    "password": "123wall"
+  },
+  {
+    "username": "dexter",
+    "firstname": "neon",
+    "lastname": "lari",
+    "email": "neon@gmail.com",
+    "password": "12345"
+  },
+  {
+    "username": "admin",
+    "firstname": "Mr",
+    "lastname": "Big",
+    "email": "bigman@gmail.com",
+    "password": "123admin"
+  }
+]
